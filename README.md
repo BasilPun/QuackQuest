@@ -17,7 +17,6 @@
 - **Obstacle Sprite Fix** → Prevent obstacles from spawning inside the ground due to width issues.
 - **More Obstacle Types** → Add variety for increased challenge.
 - **Death Animation** → On game over (all lives lost), duck explodes into particles.
-- **Jumping Logic Fix** → Prevent multiple unintended jumps (e.g., infinite air jumps).
 - **Machine Learning Agent** → Train an AI to play the game automatically once core gameplay is stable.
 
 ---
