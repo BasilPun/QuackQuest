@@ -28,42 +28,50 @@ class obstacleManager:
     if self.spawn_timer >= self.spawn_interval:
         image = random.choice(list(self.obstacle_sprites.values()))
         
-        # Step 1: Collect all blocks at this X position
+        # Proposed X position
         x = game.WIDTH * 2
-        ground_blocks = []
+        obstacle_rect = image.get_rect(topleft=(x, 0))  # y=0 for now
 
-        # Step 1: find all ground blocks under this X
-        for block in terrain.blocks:
-            if block.rect.x <= x <= block.rect.right:
-                ground_blocks.append(block)
+        # Collect all ground blocks under the obstacle's span
+        obstacle_mid_x = obstacle_rect.centerx
+        span_blocks = [b for b in terrain.blocks if b.rect.left <= obstacle_mid_x <= b.rect.right]
 
-        # Step 2: find the topmost block (smallest y)
-        if ground_blocks:
-            top_block = ground_blocks[0]
-            for block in ground_blocks:
-                if block.rect.y < top_block.rect.y:
-                    top_block = block
 
-            # Step 3: adjust X so obstacle doesn’t overlap edges
-            right_edge = top_block.rect.right
-            left_edge = top_block.rect.left
-            if x + image.get_width() > right_edge:
-                x = right_edge - image.get_width()
-                print("adjsuted right")
-            elif x < left_edge:
-                x = left_edge
-                print("adjusted left")
-
-            ground_y = top_block.rect.y
+        if span_blocks:
+            # Pick the topmost ground (lowest y)
+            ground_y = min(b.rect.y for b in span_blocks)
+            y = ground_y - obstacle_rect.height
+            obstacle_rect.y = y
         else:
-            # fallback if no block found
+            # fallback if no ground under obstacle
             ground_y = terrain.segment_starting_y
+            y = ground_y - obstacle_rect.height
+            obstacle_rect.y = y
 
-        # Step 4: place obstacle on top of ground
-        y = ground_y - image.get_height()
+        # Make a 1-pixel wide rect along the right edge
+        right_edge_rect = pygame.Rect(obstacle_rect.right, obstacle_rect.top, 1, obstacle_rect.height)
 
-        obstacle = Obstacle(image, x, y, game.world_speed)
+        # Same for left edge
+        left_edge_rect = pygame.Rect(obstacle_rect.left - 20, obstacle_rect.top, 20, obstacle_rect.height)
+
+        # Check right edge collision
+        if any(right_edge_rect.colliderect(b.rect) for b in terrain.blocks):
+            # Push left until no collision
+            while any(obstacle_rect.colliderect(b.rect) for b in terrain.blocks):
+                print("right collision")
+                obstacle_rect.x -= 10
+        # Check left edge collision
+        if any(left_edge_rect.colliderect(b.rect) for b in terrain.blocks):
+            # Push right until no collision
+            while any(obstacle_rect.colliderect(b.rect) for b in terrain.blocks):
+                print("left collision")
+                obstacle_rect.x += 20
+
+        
+        # Finally spawn obstacle
+        obstacle = Obstacle(image, obstacle_rect.x, obstacle_rect.y, game.world_speed)
         self.obstacles.add(obstacle)
+
         self.spawn_timer = 0
 
   def update(self, game, dt, terrain):

@@ -46,7 +46,7 @@ class Game:
       if event.type == pygame.QUIT:
         self.running = False
       elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_w and self.duck.jump_count < 2:
+        if event.key == pygame.K_w and self.duck.jump_count < 1000000: #for testing
           self.duck.jump()
         if event.key == pygame.K_r and self.game_state == "game_over":
           self.reset_game()
