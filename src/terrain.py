@@ -40,7 +40,7 @@ class TerrainManager:
 
   def segment_generator(self, segment_starting_x, segment_starting_y):
     segment_width = random.randint(6, 15) * self.block_width
-
+    
     step = random.randint(-3, 3) * self.block_height
     new_y = segment_starting_y + step
 

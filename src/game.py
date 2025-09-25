@@ -23,6 +23,7 @@ class Game:
     self.lives = 3
     self.pixel_font = pygame.font.Font(r"assets\game\Grand9K Pixel.ttf", 20)
     self.heart_image = pygame.image.load(r"assets\game\heart.png").convert_alpha()
+    
 
     #game states
     self.game_state = "menu"
@@ -45,7 +46,7 @@ class Game:
       if event.type == pygame.QUIT:
         self.running = False
       elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_w:
+        if event.key == pygame.K_w and self.duck.jump_count < 2:
           self.duck.jump()
         if event.key == pygame.K_r and self.game_state == "game_over":
           self.reset_game()

@@ -64,6 +64,7 @@ class Duck:
         self.rect.bottom = block.rect.top
         self.velocity_y = 0
         self.on_ground = True
+        self.jump_count = 0
       
   def handleWallCollision(self, blocks, game):
     for block in blocks:
@@ -74,7 +75,6 @@ class Duck:
             #stop world movement first
             game.world_speed = 0
             stop_point = block.rect.left
-            print("Before bounce x: ", self.rect.x)
             #snap duck to left of block
             self.rect.x = game.spawn_pos[0]
             self.bounce_back()
@@ -136,6 +136,8 @@ class Duck:
     self.state = "jumping"
     self.velocity_y = self.velocity_y + self.jump_strength
     self.on_ground = False
+    self.jump_count = self.jump_count + 1
+
 
   def duck(self, game):
     if self.state == "jumping":
