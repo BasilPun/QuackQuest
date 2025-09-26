@@ -14,7 +14,7 @@
 
 - **Obstacle Interactions** → Collisions should correctly remove a life.
 - **Tutorial / Starting Instructions** → Intro screen to explain controls before gameplay.
-- **Obstacle Sprite Fix** → Prevent obstacles from spawning inside the ground due to width issues.
+- **Obstacle Sprite Fix** → Sometimes sprites tend to spawn on air due to spawning and the edge of blocks.
 - **More Obstacle Types** → Add variety for increased challenge.
 - **Death Animation** → On game over (all lives lost), duck explodes into particles.
 - **Machine Learning Agent** → Train an AI to play the game automatically once core gameplay is stable.
