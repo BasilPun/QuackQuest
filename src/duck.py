@@ -1,11 +1,14 @@
 import pygame
+import os
 from utils import get_image
 from terrain import TerrainManager
 from particles import Explosion
 
+base_dir = os.path.dirname(__file__)
+
 class Duck:
   def __init__(self, x, y):
-    self.spriteSheet = pygame.image.load(r"assets\duck\duck_spritesheet.png").convert_alpha()
+    self.spriteSheet = pygame.image.load(os.path.join(base_dir, "assets", "duck", "duck_spritesheet.png")).convert_alpha()
     self.states = ["running", "jumping", "ducking"]
     self.frames = [
       #collumn 1

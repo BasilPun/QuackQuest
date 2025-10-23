@@ -1,8 +1,10 @@
 import pygame
+import os 
 from duck import Duck
 from terrain import TerrainManager
 from obstacles import obstacleManager
 
+base_dir = os.path.dirname(__file__)
 class Game:
   def __init__(self):
     pygame.init()
@@ -21,9 +23,8 @@ class Game:
      #score + lives
     self.score = 0
     self.lives = 3
-    self.pixel_font = pygame.font.Font(r"assets\game\Grand9K Pixel.ttf", 20)
-    self.heart_image = pygame.image.load(r"assets\game\heart.png").convert_alpha()
-    
+    self.pixel_font = pygame.font.Font(os.path.join(base_dir, "assets", "game", "Grand9K Pixel.ttf"), 20)
+    self.heart_image = pygame.image.load(os.path.join(base_dir, "assets", "game", "heart.png")).convert_alpha()
 
     #game states
     self.game_state = "menu"

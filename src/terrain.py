@@ -2,10 +2,13 @@ import pygame
 import random
 from TerrainBlock import TerrainBlock
 from utils import get_image
+import os
+
+base_dir = os.path.dirname(__file__)
 
 class TerrainManager:
   def __init__(self, screen_width, screen_height):
-    self.spriteSheet = pygame.image.load(r"assets\terrain\terrain_spritesheet.png").convert_alpha()
+    self.spriteSheet = pygame.image.load(os.path.join(base_dir, "assets", "terrain", "terrain_spritesheet.png")).convert_alpha()
     self.block_sprites = {
       "grass": get_image(self.spriteSheet, 0, 0, 20, 20),
       "dirt": get_image(self.spriteSheet, 0, 20, 20, 20)

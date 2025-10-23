@@ -2,10 +2,13 @@ import pygame, random
 from utils import get_image
 from Obstacle import Obstacle
 from terrain import TerrainManager
+import os
+
+base_dir = os.path.dirname(__file__)
 
 class obstacleManager:
   def __init__(self):
-    self.obstacleSpritesheet = pygame.image.load(r"assets\obstacles\obstacles_spritesheet_v2.png").convert_alpha()
+    self.obstacleSpritesheet = pygame.image.load(os.path.join(base_dir, "assets", "obstacles", "obstacles_spritesheet_v2.png")).convert_alpha()
     self.obstacle_sprites = {
       "tree": get_image(self.obstacleSpritesheet, 0, 0, 20, 40),
       "rock": get_image(self.obstacleSpritesheet,20, 0, 20, 40),
