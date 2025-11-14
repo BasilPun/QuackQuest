@@ -1,86 +1,106 @@
-# QuackQuest 🦆
+QuackQuest 🦆
+🕹️ How to Play
 
-## 🕹️ How to Play
+W → Jump
 
-- **W** → Jump
-- **Spacebar** → Duck & Speed Up
-- Start with **3 lives**
-- Goal: **run as far as you can** while avoiding obstacles
-- The further you run, the higher your score 🏆
+Spacebar → Duck & Speed Up
 
----
+Start with 3 lives
 
-## 🚧 To Be Added
+Goal: run as far as you can while avoiding obstacles
 
-- **Obstacle Interactions** → Collisions should correctly remove a life.
-- **Tutorial / Starting Instructions** → Intro screen to explain controls before gameplay.
-- **Obstacle Sprite Fix** → Sometimes sprites tend to spawn on air due to spawning and the edge of blocks.
-- **More Obstacle Types** → Add variety for increased challenge.
-- **Death Animation** → On game over (all lives lost), duck explodes into particles.
-- **Machine Learning Agent** → Train an AI to play the game automatically once core gameplay is stable.
+The further you run, the higher your score 🏆
 
----
+🚧 To Be Added
 
-## 📚 What I Learned
+Tutorial / Starting Instructions → Intro screen to explain controls before gameplay.
 
-### 🎮 Game Development Concepts
+More Obstacle Types → Add variety for increased challenge.
 
-- **Terrain Generation Logic**
+Death Animation → On game over (all lives lost), duck explodes into particles.
 
-  - Implemented procedural terrain with random variation (Minecraft-style).
-  - Used a world offset system to simulate an endless runner.
-  - Managed memory by pre-loading upcoming chunks and deleting off-screen ones.
+Machine Learning Agent → Train an AI to play the game automatically once core gameplay is stable.
 
-- **Sprites & Sprite Sheets**
+📚 What I Learned
+🎮 Game Development Concepts
+Terrain Generation Logic
 
-  - Extracted frames from a sprite sheet for characters and obstacles.
-  - Used `pygame.sprite.Sprite` groups for easier management and collision detection.
-  - Built smooth animations by cycling frames in code.
+Implemented procedural terrain with random variation (Minecraft-style).
 
-- **Animation Techniques**
+Used a world offset system to simulate an endless runner.
 
-  - Timed frame updates to control walking and jumping.
-  - Synced sprite changes with in-game actions for responsive visuals.
+Managed memory by pre-loading upcoming chunks and removing off-screen ones.
 
-- **Game Physics**
+Sprites & Sprite Sheets
 
-  - Implemented **gravity** to simulate falling.
-  - Designed **jump mechanics** with controlled height and responsiveness.
-  - Added **knockback/bounce back** effects when hitting obstacles.
+Extracted frames from a sprite sheet for characters and obstacles.
 
-- **Collision Detection**
+Used pygame.sprite.Sprite groups for easier management and collision detection.
 
-  - Used bounding boxes (`rect`) for efficient collision handling.
-  - Responded to collisions by stopping, sliding, or bouncing.
+Built smooth animations by cycling between frames.
 
-- **Game Loop & State Management**
-  - Built a main loop to update and render the game each frame.
-  - Managed states: _menu_, _running_, and _game over_.
-  - Added UI for restart prompts and an interactive duck on the main menu.
+Animation Techniques
 
----
+Timed frame updates to control walking and jumping.
 
-### 🐍 Python Programming Skills
+Synced sprite changes with in-game actions for responsive visuals.
 
-- **Core Python Syntax**
+Game Physics
 
-  - Practiced loops, conditionals, and functions in a real project.
-  - Organized code into reusable modules.
+Implemented gravity to simulate falling.
 
-- **Object-Oriented Programming (OOP)**
+Designed jump mechanics with controlled height and responsiveness.
 
-  - Designed classes for entities like `Duck`, `TerrainBlock`, and `Obstacle`.
-  - Encapsulated logic inside objects for cleaner, maintainable code.
+Added knockback/bounce effects on collisions.
 
-- **Code Organization**
-  - Split the project into multiple files (`game.py`, `terrain.py`, `obstacles.py`, etc.).
-  - Learned how to structure a medium-sized Python project.
+Collision Detection
 
----
+Used bounding boxes (rect) for efficient collision handling.
 
-### 🌐 Development Tools
+Fixed obstacle collision logic so the duck properly loses lives when hit.
 
-- **Git & GitHub**
-  - Set up version control with Git.
-  - Created a `.gitignore` to keep unnecessary files (like `__pycache__`) out of the repo.
-  - Learned to commit, push, and manage code changes on GitHub.
+Fixed obstacle alignment, ensuring obstacles spawn correctly on terrain instead of floating.
+
+Game Loop & State Management
+
+Built a main loop to update and render the game each frame.
+
+Implemented states: menu, running, and game over.
+
+Added UI for restarting and an interactive duck on the main menu.
+
+🐍 Python Programming Skills
+Core Python Syntax
+
+Used loops, conditionals, and functions throughout gameplay logic.
+
+Organized code into reusable utility functions.
+
+Object-Oriented Programming (OOP)
+
+Designed classes like Duck, TerrainBlock, and Obstacle.
+
+Encapsulated behavior in clean, maintainable objects.
+
+Code Organization
+
+Structured the project into multiple files (game.py, terrain.py, obstacles.py, etc.).
+
+Learned how to build and maintain a medium-sized Python project.
+
+🌐 Development Tools
+Git & GitHub
+
+Set up version control for the project.
+
+Created a .gitignore to hide unnecessary files (e.g., __pycache__).
+
+Committed and pushed updates through GitHub.
+
+🕸️ Pygbag (Web Export)
+
+Learned how to export the game using Pygbag.
+
+Successfully ran the game in a browser through WebAssembly.
+
+Understood packaging and deployment steps for web builds.
