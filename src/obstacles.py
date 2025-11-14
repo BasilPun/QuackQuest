@@ -8,17 +8,20 @@ base_dir = os.path.dirname(__file__)
 
 class obstacleManager:
   def __init__(self):
-    self.obstacleSpritesheet = pygame.image.load(os.path.join(base_dir, "assets", "obstacles", "obstacles_spritesheet_v2.png")).convert_alpha()
+    try:
+      self.obstacleSpritesheet = pygame.image.load(os.path.join(base_dir, "assets", "obstacles", "newObstacles.png")).convert_alpha()
+    except FileNotFoundError:
+    # web path (pygbag)
+      self.obstacleSpritesheet = pygame.image.load("assets/obstacles/newObstacles.png").convert_alpha()
     self.obstacle_sprites = {
-      "tree": get_image(self.obstacleSpritesheet, 0, 0, 20, 40),
-      "rock": get_image(self.obstacleSpritesheet,20, 0, 20, 40),
-      "spike": get_image(self.obstacleSpritesheet, 40, 0, 20, 40),
-      "bush": get_image(self.obstacleSpritesheet, 0, 40, 20, 40),
-      "trashcan": get_image(self.obstacleSpritesheet, 20, 40, 20, 40)
+      "grassyPot": get_image(self.obstacleSpritesheet, 0, 0, 30, 30),
+      "bush": get_image(self.obstacleSpritesheet,30, 0, 30, 30),
+      "spike": get_image(self.obstacleSpritesheet, 0, 30, 30, 30),
+      "brokenPiller": get_image(self.obstacleSpritesheet, 30, 30, 30, 30)
     }
 
-    for i in self.obstacle_sprites:
-      self.obstacle_sprites[i] = pygame.transform.scale(self.obstacle_sprites[i], (40, 80))
+    # for i in self.obstacle_sprites:
+    #   self.obstacle_sprites[i] = pygame.transform.scale(self.obstacle_sprites[i], (40, 80))
 
     self.obstacles = pygame.sprite.Group()
 

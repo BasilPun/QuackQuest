@@ -1,9 +1,10 @@
 from game import Game 
+import asyncio
 #function to start the game
-def main():
+async def main():
   game = Game()
-  game.run()
+  await game.run()
 
 #if this is main, start the game
 if __name__ == "__main__":
-  main()
+  asyncio.run(main())

@@ -3,6 +3,7 @@ import os
 from duck import Duck
 from terrain import TerrainManager
 from obstacles import obstacleManager
+import asyncio
 
 base_dir = os.path.dirname(__file__)
 class Game:
@@ -23,8 +24,16 @@ class Game:
      #score + lives
     self.score = 0
     self.lives = 3
-    self.pixel_font = pygame.font.Font(os.path.join(base_dir, "assets", "game", "Grand9K Pixel.ttf"), 20)
-    self.heart_image = pygame.image.load(os.path.join(base_dir, "assets", "game", "heart.png")).convert_alpha()
+    try:
+      self.pixel_font = pygame.font.Font(os.path.join(base_dir, "assets", "game", "Grand9K Pixel.ttf"), 20)
+    except FileNotFoundError:
+      self.pixel_font = pygame.font.Font("assets/game/Grand9K Pixel.ttf", 20)
+
+    try:
+        self.heart_image = pygame.image.load(os.path.join(base_dir, "assets", "game", "heart.png")).convert_alpha()
+    except FileNotFoundError:
+        self.heart_image = pygame.image.load("assets/game/heart.png").convert_alpha()
+
 
     #game states
     self.game_state = "menu"
@@ -34,12 +43,13 @@ class Game:
     self.obstacleManager = obstacleManager()
 
   #Main game loop, handles all different components of game.
-  def run(self):
+  async def run(self):
     while self.running == True:
       dt = self.clock.tick(self.fps)
       self.handle_events()
       self.update(dt)
       self.draw()
+      await asyncio.sleep(0) #pygbag
     pygame.quit()
 
   def handle_events(self):
@@ -47,7 +57,7 @@ class Game:
       if event.type == pygame.QUIT:
         self.running = False
       elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_w and self.duck.jump_count < 1000000: #for testing
+        if event.key == pygame.K_w and self.duck.jump_count < 2: #for testing
           self.duck.jump()
         if event.key == pygame.K_r and self.game_state == "game_over":
           self.reset_game()
@@ -70,7 +80,7 @@ class Game:
     self.game_state = "running"
 
   def update(self, dt):
-    self.duck.update(dt, self.terrain_manager.blocks, self)
+    self.duck.update(dt, self.terrain_manager.blocks, self.obstacleManager, self)
     self.terrain_manager.update(self.world_speed)
     self.score_handler()
     self.obstacleManager.update(self, dt, self.terrain_manager)

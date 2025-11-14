@@ -8,7 +8,11 @@ base_dir = os.path.dirname(__file__)
 
 class Duck:
   def __init__(self, x, y):
-    self.spriteSheet = pygame.image.load(os.path.join(base_dir, "assets", "duck", "duck_spritesheet.png")).convert_alpha()
+    try:
+      self.spriteSheet = pygame.image.load(os.path.join(base_dir, "assets", "duck", "duck_spritesheet.png")).convert_alpha()
+    except FileNotFoundError:
+    # fallback for pygbag
+      self.spriteSheet = pygame.image.load("assets/duck/duck_spritesheet.png").convert_alpha()
     self.states = ["running", "jumping", "ducking"]
     self.frames = [
       #collumn 1
@@ -46,12 +50,15 @@ class Duck:
     self.bounce_reset_time = 1000
     self.bounce_amount = 8
     self.velocity_x = 0
+    self.bouncing_from_obstacle = False
+    self.bouncing_from_wall = False
 
 
-  def update(self, dt, blocks, game):
+  def update(self, dt, blocks, obstacles, game):
     self.handleGravity(blocks)
     self.handleWallCollision(blocks, game)
     self.stay_in_bounds()
+    self.handleObjectCollisions(obstacles, game)
     self.animate(dt)
 
   def handleGravity(self, blocks):
@@ -81,10 +88,11 @@ class Duck:
             #snap duck to left of block
             self.rect.x = game.spawn_pos[0]
             self.bounce_back()
+            self.bouncing_from_wall = True
             game.lives = game.lives - 1
             break
 
-    if self.bouncing_back == True:
+    if self.bouncing_back == True and self.bouncing_from_wall == True:
       now  = pygame.time.get_ticks()
       self.state = "running"
       self.rect.x = self.rect.x + self.velocity_x
@@ -94,14 +102,49 @@ class Duck:
         self.bounce_timer = 0
 
     # 3 because it bugs out at 0 with ducking logic constantly accleerating
-    if game.world_speed <= 3 and self.bouncing_back == False and game.lives>= 1:
-      self.rect.x = self.rect.x + 5
+    if game.world_speed <= 3 and self.bouncing_back == False and game.lives>= 1 and self.bouncing_from_wall == True:
+      self.rect.x = self.rect.x + 2
       if self.rect.right > stop_point and self.rect.x >= game.spawn_pos[0]: 
         self.rect.x = game.spawn_pos[0]
         game.world_speed = 5
+        self.bouncing_from_wall = False
     else:
       pass
+  
+  def handleObjectCollisions(self, obstacles, game):
+    for ob in obstacles.obstacles:
+      # Only check collisions if not currently bouncing
+      if self.rect.colliderect(ob.rect) and not self.bouncing_back:
+        global stop_point
+        # Stop the world movement
+        game.world_speed = 0
+        stop_point = ob.rect.left
+        
+        # Snap the duck back to its spawn point (like wall collision)
+        self.rect.x = game.spawn_pos[0]
+        self.bounce_back()
+        self.bouncing_from_obstacle = True
+        game.lives = max(game.lives - 1, 0)
+        break  # Only process one collision at a time
 
+    # --- Handle the bounce motion ---
+    if self.bouncing_back:
+      now = pygame.time.get_ticks()
+      self.state = "running"
+      self.rect.x += self.velocity_x
+      self.velocity_x *= 0.9  # Gradually slow down the bounce
+      
+      # Reset bounce when timer finishes
+      if now - self.bounce_timer > self.bounce_reset_time:
+        self.bouncing_back = False
+        self.bounce_timer = 0
+
+    # --- Resume normal scrolling after bounce ---
+    if game.world_speed <= 3 and not self.bouncing_back and game.lives > 0:
+      self.rect.x += 2
+      if self.rect.right > stop_point and self.rect.x >= game.spawn_pos[0]:
+        self.rect.x = game.spawn_pos[0]
+        game.world_speed = 5
                   
 
   def bounce_back(self):
